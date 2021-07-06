@@ -211,14 +211,37 @@ const setupButtons = (button, btnType) => {
   button.addEventListener("click", function (event) {
     event.preventDefault();
     if (btnType == "green") {
-      if (blinkTracker.tracking()) alert("Already Tracking");
-      blinkTracker.startTrackingForBenchmark();
-    } else if (btnType === "blue") {
-      if (blinkTracker.tracking()) alert("Already Tracking");
-      blinkTracker.startPhaseWithBioFeedback();
-    } else if (btnType === "purple") {
-      if (blinkTracker.tracking()) alert("Already Tracking");
-      blinkTracker.startPhaseWithBioFeedback();
+      if (
+        this.classList.value !== "disabled" &&
+        !blinkTracker.tracking() &&
+        !blinkTracker.benchmark()
+      ) {
+        this.classList.add("disabled");
+        event.target.style.backgroundColor = "white";
+        blinkTracker.startTrackingForBenchmark();
+      }
+    } else if (
+      btnType === "blue" &&
+      !blinkTracker.tracking() &&
+      blinkTracker.benchmark()
+    ) {
+      if (this.classList.value !== "disabled") {
+        this.classList.add("disabled");
+        event.target.style.backgroundColor = "white";
+
+        blinkTracker.startPhaseWithBioFeedback();
+      }
+    } else if (
+      btnType === "purple" &&
+      !blinkTracker.tracking() &&
+      blinkTracker.benchmark()
+    ) {
+      if (this.classList.value !== "disabled") {
+        this.classList.add("disabled");
+        event.target.style.backgroundColor = "white";
+
+        blinkTracker.startPhaseWithBioFeedback();
+      }
     } else if (btnType === "download") {
       const data = localStorage.getItem("allEntries");
       const options = {

@@ -148,5 +148,6 @@ export const blinkTracker = (() => {
     isBenchmarking: () => isBenchmarking,
     shouldShowBiofeedback,
     tracking: () => trackingOn,
+    benchmark: () => benchmark,
   };
 })();
