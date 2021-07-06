@@ -135,8 +135,10 @@ const detectBlinkLeft = (lm, distances) => {
       _leftEyeBlinked = false;
     }, 150);
 
-    blinkTracker.addBlink();
-    console.log("Blinking Running Average", blinkTracker.getMovingAvg());
+    if (blinkTracker.tracking()) {
+      blinkTracker.addBlink();
+      console.log("Blinking Running Average", blinkTracker.getMovingAvg());
+    }
   }
 };
 
@@ -164,7 +166,9 @@ const detectBlinkRight = (lm, distances) => {
       _rightEyeBlinked = false;
     }, 150);
 
-    blinkTracker.addBlink();
+    if (blinkTracker.tracking()) {
+      blinkTracker.addBlink();
+    }
   }
 };
 

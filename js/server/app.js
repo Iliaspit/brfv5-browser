@@ -5,6 +5,9 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var cors = require("cors");
 var fs = require("fs");
+var os = require("os");
+var path = require("path");
+var desktopDir = path.join(os.homedir(), "Desktop");
 
 var { ExportToCsv } = require("export-to-csv");
 
@@ -24,16 +27,12 @@ const exportToCsv = (localStorage) => {
 
   const csvExporter = new ExportToCsv(options);
 
-  const x = csvExporter.generateCsv(localStorage, true);
+  const csvFile = csvExporter.generateCsv(localStorage, true);
 
-  fs.writeFile("./myAwesomeCSV.csv", x, function (err) {
+  fs.writeFile(`${desktopDir}/studyResults.csv`, csvFile, function (err) {
     if (err) throw err;
-    console.log("ILIAS SUCCESSFULLY WRITTEN");
+    console.log("CSV SUCCESSFULLY CREATED");
   });
-
-  // const csvExporter = new ExportToCsv(options);
-
-  // return csvExporter.generateCsv(localStorage);
 };
 
 var app = express();

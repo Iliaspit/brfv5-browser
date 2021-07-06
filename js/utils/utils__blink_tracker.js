@@ -20,54 +20,104 @@ export const blinkTracker = (() => {
   let timer = 0;
   let movingAvg;
   let isBenchmarking = false;
+  let bioFeedbackPhase = false;
+  // let currentSession = 0;
 
-  const startTracking = () => {
+  const startTrackingForBenchmark = () => {
+    // currentSession += 1;
     localStorage.clear();
     isBenchmarking = true;
     trackingOn = true;
     console.log("Benchmarking has begun");
-    console.log("Blink tracking has started successfully");
 
     avgInterval = setInterval(function () {
+      timer += 200;
       movingAvg = totalCount / timer;
 
       addEntry({
         timer,
         movingAvg,
-        feedbackShown: benchmark && shouldShowBiofeedback(),
-        benchmark: benchmark && benchmark,
+        feedbackShown: shouldShowBiofeedback(),
+        benchmarking: isBenchmarking,
+        benchmark: benchmark || null,
       });
     }, 200);
 
-    timerInterval = setInterval(function () {
-      timer += 200;
-    }, 200);
-
     benchmarkTimeout = setTimeout(() => {
+      trackingOn = false;
       isBenchmarking = false;
       benchmark = movingAvg;
 
       addEntry({
         timer,
         movingAvg,
-        feedbackShown: false,
-        benchmark,
+        feedbackShown: shouldShowBiofeedback(),
+        benchmarking: isBenchmarking,
+        benchmark: benchmark || null,
       });
+
+      clearInterval(avgInterval);
+      clearTimeout(benchmarkTimeout);
 
       console.log(
         "Benchmarking has been completed - the benchmark is:",
         benchmark
       );
+    }, 10000);
+  };
 
-      experimentTimeout = setTimeout(() => {
-        trackingOn = false;
-        clearInterval(avgInterval);
-        clearInterval(timerInterval);
-        clearTimeout(benchmarkTimeout);
+  const startPhaseWithBioFeedback = () => {
+    trackingOn = true;
+    console.log("Bio feedback phase has begun");
+    bioFeedbackPhase = true;
 
-        console.log("The experiment has now been completed");
-      }, 150000);
-    }, 150000);
+    avgInterval = setInterval(function () {
+      timer += 200;
+      movingAvg = totalCount / timer;
+
+      addEntry({
+        timer,
+        movingAvg,
+        feedbackShown: shouldShowBiofeedback(),
+        benchmarking: isBenchmarking,
+        benchmark: benchmark,
+      });
+    }, 200);
+
+    benchmarkTimeout = setTimeout(() => {
+      trackingOn = false;
+      clearInterval(avgInterval);
+      clearTimeout(benchmarkTimeout);
+      bioFeedbackPhase = false;
+
+      console.log("Bio feedback phase has been completed");
+    }, 10000);
+  };
+
+  const startPhaseWithoutBioFeedback = () => {
+    trackingOn = true;
+    console.log("Non Bio feedback phase has begun");
+
+    avgInterval = setInterval(function () {
+      timer += 200;
+      movingAvg = totalCount / timer;
+
+      addEntry({
+        timer,
+        movingAvg,
+        feedbackShown: false,
+        benchmarking: isBenchmarking,
+        benchmark: benchmark,
+      });
+    }, 200);
+
+    benchmarkTimeout = setTimeout(() => {
+      trackingOn = false;
+      clearInterval(avgInterval);
+      clearTimeout(benchmarkTimeout);
+
+      console.log("Non Bio feedback phase has been completed");
+    }, 10000);
   };
 
   const stopTracking = () => {
@@ -88,7 +138,9 @@ export const blinkTracker = (() => {
   const shouldShowBiofeedback = () => movingAvg > benchmark;
 
   return {
-    startTracking,
+    startTrackingForBenchmark,
+    startPhaseWithBioFeedback,
+    startPhaseWithoutBioFeedback,
     stopTracking,
     addBlink,
     getCount: () => totalCount,

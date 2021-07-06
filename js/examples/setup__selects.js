@@ -210,10 +210,15 @@ const setupSelect = (select, onSelect) => {
 const setupButtons = (button, btnType) => {
   button.addEventListener("click", function (event) {
     event.preventDefault();
-    if (btnType == "start" && !blinkTracker.tracking()) {
-      blinkTracker.startTracking();
-    } else if (btnType === "stop" && blinkTracker.tracking()) {
-      blinkTracker.stopTracking();
+    if (btnType == "green") {
+      if (blinkTracker.tracking()) alert("Already Tracking");
+      blinkTracker.startTrackingForBenchmark();
+    } else if (btnType === "blue") {
+      if (blinkTracker.tracking()) alert("Already Tracking");
+      blinkTracker.startPhaseWithBioFeedback();
+    } else if (btnType === "purple") {
+      if (blinkTracker.tracking()) alert("Already Tracking");
+      blinkTracker.startPhaseWithBioFeedback();
     } else if (btnType === "download") {
       const data = localStorage.getItem("allEntries");
       const options = {
@@ -239,18 +244,19 @@ const selectExample = document.getElementById("__brfv5_select_example");
 const selectSetup = document.getElementById("__brfv5_select_setup");
 const selectImage = document.getElementById("__brfv5_select_image");
 
-const buttonStart = document.getElementById("__btn_start");
-const buttonStop = document.getElementById("__btn_stop");
+const buttonGreen = document.getElementById("__btn_green");
+const buttonBlue = document.getElementById("__btn_blue");
+const buttonPurple = document.getElementById("__btn_purple");
 const buttonDownload = document.getElementById("__btn_download");
 
 preselectThreeJS(selectExample);
 
 setupSelect(selectExample, switchExample);
 setupSelect(selectSetup, switchSetup);
-// setupSelect(selectImage, switchImage);
 
-setupButtons(buttonStart, "start");
-setupButtons(buttonStop, "stop");
+setupButtons(buttonGreen, "green");
+setupButtons(buttonBlue, "blue");
+setupButtons(buttonPurple, "purple");
 setupButtons(buttonDownload, "download");
 
 // switchExample(selectExample.value)
