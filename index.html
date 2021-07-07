@@ -94,10 +94,145 @@
         padding: 0;
         width: 100vw;
         height: 100vw;
-        background-color: #ffffff;
+        /* background-color: #ffffff; */
         -ms-text-size-adjust: none;
         -moz-text-size-adjust: none;
         -webkit-text-size-adjust: none;
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+      }
+
+      .container {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        position: relative;
+        animation-name: pulse;
+        animation-duration: 10s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        box-shadow: inset 0 0 0 3px #79a6e8;
+        z-index: -1;
+      }
+
+      .container:after {
+        content: "breathe in";
+        position: absolute;
+        color: rgba(255, 255, 255, 0.7);
+        top: calc(50% - 10px);
+        font-size: 24px;
+        font-family: Helvetica;
+        width: 100%;
+        vertical-align: middle;
+        text-align: center;
+        animation-name: text;
+        animation-duration: 10s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+
+      .container:before {
+        content: "";
+        width: 16px;
+        height: 50%;
+        position: absolute;
+        display: block;
+        top: 0;
+        left: calc(50% - 8px);
+        z-index: 999;
+        background-image: radial-gradient(
+          circle at top center,
+          #6080c8 0%,
+          #6080c8 8px,
+          transparent 8px,
+          transparent 100%
+        );
+        animation-timing-function: linear;
+        transform-origin: center bottom;
+        animation-name: rotate;
+        animation-duration: 10s;
+        animation-iteration-count: infinite;
+      }
+
+      .circle {
+        width: 94%;
+        height: 94%;
+        border-radius: 50%;
+        background: linear-gradient(to bottom, #80c4e0 0%, #656cd2 100%);
+        position: absolute;
+        top: 3%;
+        left: 3%;
+      }
+
+      .circle:before {
+        content: "";
+        width: 16px;
+        height: 50%;
+        position: absolute;
+        display: block;
+        top: -9px;
+        left: calc(50% - 8px);
+        background-image: radial-gradient(
+          circle at top center,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(255, 255, 255, 1) 8px,
+          transparent 8px,
+          transparent 100%
+        );
+      }
+
+      .circle:after {
+        content: "";
+        width: 16px;
+        height: 50%;
+        position: absolute;
+        display: block;
+        bottom: -9px;
+        left: calc(50% - 8px);
+        background-image: radial-gradient(
+          circle at bottom center,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(255, 255, 255, 1) 8px,
+          transparent 8px,
+          transparent 100%
+        );
+      }
+
+      @keyframes text {
+        0% {
+          content: "breathe in";
+        }
+        100% {
+          content: "breathe out";
+        }
+      }
+
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(180deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(0.6);
+        }
+        50% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(0.6);
+        }
       }
     </style>
 
@@ -113,47 +248,43 @@
   </head>
 
   <body>
-    <div style="position: relative; left: 35%; top: 20%">
+    <div id="expanding-ball" style="display: none">
+      <div class="container">
+        <div class="circle"></div>
+      </div>
+    </div>
+    <div id="all-buttons">
+      <!-- <div style="position: relative; left: 35%; top: 20%"> -->
       <button
         id="__btn_green"
         style="
-          color: lightgreen;
           background: lightgreen;
           border-radius: 15px;
           border: none;
           height: 100px;
           width: 100px;
         "
-      >
-        Green
-      </button>
+      ></button>
       <button
         id="__btn_blue"
         style="
-          color: lightblue;
           background: lightblue;
           border-radius: 15px;
           border: none;
           height: 100px;
           width: 100px;
         "
-      >
-        Blue
-      </button>
+      ></button>
       <button
         id="__btn_purple"
         style="
-          color: lightpink;
           background: lightpink;
           border-radius: 15px;
           border: none;
           height: 100px;
           width: 100px;
         "
-      >
-        Purple
-      </button>
-      <!-- <button id="__btn_stop">Stop</button> -->
+      ></button>
       <button
         id="__btn_download"
         style="
@@ -164,9 +295,8 @@
           height: 100px;
           width: 100px;
         "
-      >
-        Download
-      </button>
+      ></button>
+      <!-- </div> -->
     </div>
     <div id="__brfv5" class="__brfv5" style="display: none">
       <div class="fixed tr10 ontop o6" style="width: 256px">

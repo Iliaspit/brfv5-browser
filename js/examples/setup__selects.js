@@ -229,7 +229,7 @@ const setupButtons = (button, btnType) => {
         this.classList.add("disabled");
         event.target.style.backgroundColor = "white";
 
-        blinkTracker.startPhaseWithBioFeedback();
+        blinkTracker.startPhaseWithoutBioFeedback();
       }
     } else if (
       btnType === "purple" &&
