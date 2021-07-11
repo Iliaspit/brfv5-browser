@@ -26,6 +26,7 @@ export const blinkTracker = (() => {
   const startTrackingForBenchmark = () => {
     // currentSession += 1;
     localStorage.clear();
+    bioFeedbackPhase = false;
     isBenchmarking = true;
     trackingOn = true;
     console.log("Benchmarking has begun");
@@ -95,6 +96,7 @@ export const blinkTracker = (() => {
   };
 
   const startPhaseWithoutBioFeedback = () => {
+    bioFeedbackPhase = false;
     trackingOn = true;
     console.log("Non Bio feedback phase has begun");
 
@@ -135,7 +137,7 @@ export const blinkTracker = (() => {
     }
   };
 
-  const shouldShowBiofeedback = () => movingAvg > benchmark;
+  const shouldShowBiofeedback = () => bioFeedbackPhase && movingAvg > benchmark;
 
   return {
     startTrackingForBenchmark,

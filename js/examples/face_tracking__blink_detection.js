@@ -168,11 +168,17 @@ const detectBlinkRight = (lm, distances) => {
 
     if (blinkTracker.tracking()) {
       blinkTracker.addBlink();
-    } else {
-      // TEST ---------------------------------
-      document.getElementById("all-buttons").style.display = "none";
-      document.getElementById("expanding-ball").style.display = "block";
-    }
+
+      if (blinkTracker.shouldShowBiofeedback) {
+        // document.getElementById("all-buttons").style.display = "none";
+        document.getElementById("expanding-ball").style.display = "block";
+      }
+      //  else {
+
+      // }
+    // } else {
+    //   // TEST ---------------------------------
+    // }
   }
 };
 
