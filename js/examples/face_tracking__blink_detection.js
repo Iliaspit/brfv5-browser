@@ -169,16 +169,14 @@ const detectBlinkRight = (lm, distances) => {
     if (blinkTracker.tracking()) {
       blinkTracker.addBlink();
 
-      if (blinkTracker.shouldShowBiofeedback) {
-        // document.getElementById("all-buttons").style.display = "none";
+      if (blinkTracker.shouldShowBiofeedback()) {
+        document.getElementById("all-buttons").style.display = "none";
         document.getElementById("expanding-ball").style.display = "block";
+      } else {
+        document.getElementById("all-buttons").style.display = "block";
+        document.getElementById("expanding-ball").style.display = "none";
       }
-      //  else {
-
-      // }
-    // } else {
-    //   // TEST ---------------------------------
-    // }
+    }
   }
 };
 
@@ -187,7 +185,7 @@ const exampleConfig = {
   onTracking: handleTrackingResults,
 };
 
-// run() will be called automatically after 1 second, if run isn't called immediately after the script was loaded.
+// run() will be called automatically  iterafter 1 second, if run isn't called immediately after the script was loaded.
 // Exporting it allows re-running the configuration from within other scripts.
 
 let timeoutId = -1;

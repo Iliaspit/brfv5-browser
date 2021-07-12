@@ -92,7 +92,7 @@ export const blinkTracker = (() => {
       bioFeedbackPhase = false;
 
       console.log("Bio feedback phase has been completed");
-    }, 10000);
+    }, 300000);
   };
 
   const startPhaseWithoutBioFeedback = () => {
