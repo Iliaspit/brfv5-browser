@@ -23,6 +23,14 @@ export const blinkTracker = (() => {
   let bioFeedbackPhase = false;
   // let currentSession = 0;
 
+  // ---------------- ******* ----------------
+
+  // RESET TOTAL ETC IN THE BEGINNING OF EACH PHASE
+  // MAKE IT INSTEAD OF A MOVING AVERAGE THAT TAKES ACCOUNT THE TOTAL, AN AVERAGE
+  // OF LAST 1 MINUTE
+
+  // ---------------- ******* ----------------
+
   const startTrackingForBenchmark = () => {
     // currentSession += 1;
     localStorage.clear();
