@@ -72,7 +72,7 @@ export const blinkTracker = (() => {
         "Benchmarking has been completed - the benchmark is:",
         benchmark
       );
-    }, 10000);
+    }, 180000);
   };
 
   const startPhaseWithBioFeedback = () => {
@@ -127,7 +127,7 @@ export const blinkTracker = (() => {
       clearTimeout(benchmarkTimeout);
 
       console.log("Non Bio feedback phase has been completed");
-    }, 10000);
+    }, 300000);
   };
 
   const stopTracking = () => {
