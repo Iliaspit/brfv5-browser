@@ -78,6 +78,11 @@ export const handleTrackingResults = (brfv5Manager, brfv5Config, canvas) => {
         lm[47],
       ];
 
+      if (!blinkTracker.tracking()) {
+        document.getElementById("all-buttons").style.display = "block";
+        document.getElementById("expanding-ball").style.display = "none";
+      }
+
       detectBlinkLeft(leftEyeLandmarks, _leftEyeLidDistances, ctx);
 
       detectBlinkRight(rightEyeLandmarks, _rightEyeLidDistances, ctx);
@@ -135,10 +140,10 @@ const detectBlinkLeft = (lm, distances) => {
       _leftEyeBlinked = false;
     }, 150);
 
-    if (blinkTracker.tracking()) {
-      blinkTracker.addBlink();
-      console.log("Blinking Running Average", blinkTracker.getMovingAvg());
-    }
+    // if (blinkTracker.tracking()) {
+    //   blinkTracker.addBlink();
+    //   console.log("Blinking Running Average", blinkTracker.getMovingAvg());
+    // }
   }
 };
 
@@ -169,10 +174,19 @@ const detectBlinkRight = (lm, distances) => {
     if (blinkTracker.tracking()) {
       blinkTracker.addBlink();
 
-      if (blinkTracker.shouldShowBiofeedback()) {
+      console.log("Blinking Running Average", blinkTracker.getMovingAvg());
+
+      if (
+        blinkTracker.shouldShowBiofeedback() &&
+        !blinkTracker.isShowingBiofeedback()
+      ) {
+        blinkTracker.startBiofeedbackTimer();
         document.getElementById("all-buttons").style.display = "none";
         document.getElementById("expanding-ball").style.display = "block";
-      } else {
+      } else if (
+        !blinkTracker.shouldShowBiofeedback() &&
+        !blinkTracker.isShowingBiofeedback()
+      ) {
         document.getElementById("all-buttons").style.display = "block";
         document.getElementById("expanding-ball").style.display = "none";
       }
