@@ -103,7 +103,7 @@ export const blinkTracker = (() => {
         "Benchmarking has been completed - the benchmark is:",
         benchmark
       );
-    }, 60000);
+    }, 180000);
   };
 
   const startPhaseWithBioFeedback = () => {
@@ -138,7 +138,7 @@ export const blinkTracker = (() => {
       resetMetrics();
 
       console.log("Bio feedback phase has been completed");
-    }, 120000);
+    }, 300000);
   };
 
   const startPhaseWithoutBioFeedback = () => {
@@ -172,7 +172,7 @@ export const blinkTracker = (() => {
       resetMetrics();
 
       console.log("Non Bio feedback phase has been completed");
-    }, 120000);
+    }, 300000);
   };
 
   const stopTracking = () => {
