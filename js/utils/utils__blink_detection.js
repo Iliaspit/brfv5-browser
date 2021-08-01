@@ -38,7 +38,7 @@ export const detectBlink = (
      * at continuous movement, why do we have a gap between the values we are using? For example in the
      * for loops below, the second and third loop do not start at 3 and 8 respectively but every time
      * the detectBlink function is used, there are 2 measurements that are skipped. What I mean is that
-     * in an arrat of the following distance measurements:
+     * in the following distance measurements array:
      * [d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13]
      * we are alaways ommitting d4, d5 and d9, d10. Why do we do that?
      * */
