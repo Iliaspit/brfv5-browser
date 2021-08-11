@@ -7,7 +7,10 @@
 //   ],
 // });
 
-import { addEntry } from "../utils/utils__add_to_local_storage.js";
+import {
+  addEntry,
+  calculateAvgBlinkRate,
+} from "../utils/utils__add_to_local_storage.js";
 
 export const blinkTracker = (() => {
   let avgInterval;
@@ -38,21 +41,21 @@ export const blinkTracker = (() => {
 
   const isShowingBiofeedback = () => showingBiofeedback;
 
-  const calculateMovAvg = () => {
-    let movingAvg;
+  const calculateBlinkRate = () => {
+    let blinkRate;
 
     if (timer <= 20000) {
-      movingAvg = totalCount / timer;
+      blinkRate = totalCount / timer;
     } else {
       const startingPointForTimer = timer - 20000;
       const startingPointForCount = totalCountByTime[startingPointForTimer];
 
       const countToBeUsed = totalCount - startingPointForCount;
       const timeToBeUsed = timer - startingPointForTimer;
-      movingAvg = countToBeUsed / timeToBeUsed;
+      blinkRate = countToBeUsed / timeToBeUsed;
     }
 
-    return movingAvg;
+    return blinkRate;
   };
 
   const resetMetrics = () => {
@@ -75,7 +78,7 @@ export const blinkTracker = (() => {
 
       addEntry({
         timer,
-        movingAvg: calculateMovAvg(),
+        blinkRate: calculateBlinkRate(),
         feedbackShown: isShowingBiofeedback(),
         benchmarking: isBenchmarking,
         benchmark: benchmark || null,
@@ -85,11 +88,11 @@ export const blinkTracker = (() => {
     benchmarkTimeout = setTimeout(() => {
       trackingOn = false;
       isBenchmarking = false;
-      benchmark = calculateMovAvg();
+      benchmark = calculateAvgBlinkRate();
 
       addEntry({
         timer,
-        movingAvg: calculateMovAvg(),
+        blinkRate: calculateBlinkRate(),
         feedbackShown: isShowingBiofeedback(),
         benchmarking: isBenchmarking,
         benchmark: benchmark || null,
@@ -103,7 +106,7 @@ export const blinkTracker = (() => {
         "Benchmarking has been completed - the benchmark is:",
         benchmark
       );
-    }, 180000);
+    }, 30000);
   };
 
   const startPhaseWithBioFeedback = () => {
@@ -118,7 +121,7 @@ export const blinkTracker = (() => {
 
       addEntry({
         timer,
-        movingAvg: calculateMovAvg(),
+        blinkRate: calculateBlinkRate(),
         feedbackShown: isShowingBiofeedback(),
         benchmarking: isBenchmarking,
         benchmark: benchmark,
@@ -153,7 +156,7 @@ export const blinkTracker = (() => {
 
       addEntry({
         timer,
-        movingAvg: calculateMovAvg(),
+        blinkRate: calculateBlinkRate(),
         feedbackShown: false,
         benchmarking: isBenchmarking,
         benchmark: benchmark,
@@ -191,7 +194,7 @@ export const blinkTracker = (() => {
   };
 
   const shouldShowBiofeedback = () =>
-    totalCount !== 0 && bioFeedbackPhase && calculateMovAvg() > benchmark;
+    totalCount !== 0 && bioFeedbackPhase && calculateBlinkRate() > benchmark;
 
   const startBiofeedbackTimer = () => {
     let bioFeedbackTimeout;
@@ -210,7 +213,7 @@ export const blinkTracker = (() => {
     stopTracking,
     addBlink,
     getCount: () => totalCount,
-    getMovingAvg: () => calculateMovAvg(),
+    getBlinkRate: () => calculateBlinkRate(),
     isBenchmarking: () => isBenchmarking,
     shouldShowBiofeedback,
     startBiofeedbackTimer,

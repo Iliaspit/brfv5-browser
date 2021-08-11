@@ -142,7 +142,7 @@ const detectBlinkLeft = (lm, distances) => {
 
     // if (blinkTracker.tracking()) {
     //   blinkTracker.addBlink();
-    //   console.log("Blinking Running Average", blinkTracker.getMovingAvg());
+    //   console.log("Blinking Running Average", blinkTracker.getBlinkRate());
     // }
   }
 };
@@ -174,7 +174,7 @@ const detectBlinkRight = (lm, distances) => {
     if (blinkTracker.tracking()) {
       blinkTracker.addBlink();
 
-      console.log("Blinking Running Average", blinkTracker.getMovingAvg());
+      console.log("Blinking Running Average", blinkTracker.getBlinkRate());
 
       if (
         blinkTracker.shouldShowBiofeedback() &&
