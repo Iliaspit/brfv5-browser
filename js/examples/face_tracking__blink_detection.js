@@ -138,7 +138,7 @@ const detectBlinkLeft = (lm, distances) => {
 
     _leftEyeTimeOut = setTimeout(() => {
       _leftEyeBlinked = false;
-    }, 150);
+    }, 100);
 
     // if (blinkTracker.tracking()) {
     //   blinkTracker.addBlink();
@@ -169,7 +169,7 @@ const detectBlinkRight = (lm, distances) => {
 
     _rightEyeTimeOut = setTimeout(() => {
       _rightEyeBlinked = false;
-    }, 150);
+    }, 100);
 
     if (blinkTracker.tracking()) {
       blinkTracker.addBlink();

@@ -10,20 +10,25 @@ export function addEntry(entries) {
 }
 
 export function calculateAvgBlinkRate() {
+  var noOfIntervalsInTwentySeconds = 20000 / 200;
   var existingEntries = JSON.parse(localStorage.getItem("allEntries"));
 
-  var reducer = (accumulator, currentValue) => {
+  var reducer = (accumulator, currentValue, index) => {
     if (
       !isNaN(currentValue.blinkRate) &&
       typeof currentValue.blinkRate !== "undefined" &&
-      typeof currentValue.blinkRate === "number"
+      typeof currentValue.blinkRate === "number" &&
+      index >= noOfIntervalsInTwentySeconds
     ) {
       return accumulator + Number(currentValue.blinkRate);
     }
     return accumulator;
   };
 
+  var entriesLenAfterInitialTwentySeconds =
+    existingEntries.length - noOfIntervalsInTwentySeconds;
   var totalBlinkRate = existingEntries.reduce(reducer, 0);
-  var avgBlinkRate = totalBlinkRate / existingEntries.length;
+  var avgBlinkRate = totalBlinkRate / entriesLenAfterInitialTwentySeconds;
+
   return avgBlinkRate;
 }
