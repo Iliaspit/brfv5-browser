@@ -19,6 +19,7 @@ import { trackCamera } from "./setup__example.js";
 // import { drawFaceDetectionResults } from "../utils/utils__draw_tracking_results.js";
 import { detectBlink } from "../utils/utils__blink_detection.js";
 import { blinkTracker } from "../utils/utils__blink_tracker.js";
+import { addEntry } from "../utils/utils__add_to_local_storage.js";
 
 import { brfv5 } from "../brfv5/brfv5__init.js";
 import { colorPrimary, colorSecondary } from "../utils/utils__colors.js";
@@ -173,6 +174,13 @@ const detectBlinkRight = (lm, distances) => {
 
     if (blinkTracker.tracking()) {
       blinkTracker.addBlink();
+      addEntry({
+        timer: blinkTracker.getTimer(),
+        blinkRate: blinkTracker.calculateBlinkRate(),
+        feedbackShown: blinkTracker.isShowingBiofeedback(),
+        benchmarking: blinkTracker.isBenchmarking(),
+        benchmark: blinkTracker.benchmark() || null,
+      });
 
       console.log("Blinking Running Average", blinkTracker.getBlinkRate());
 

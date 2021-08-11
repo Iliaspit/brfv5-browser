@@ -76,13 +76,13 @@ export const blinkTracker = (() => {
       timer += 200;
       totalCountByTime[timer] = totalCount;
 
-      addEntry({
-        timer,
-        blinkRate: calculateBlinkRate(),
-        feedbackShown: isShowingBiofeedback(),
-        benchmarking: isBenchmarking,
-        benchmark: benchmark || null,
-      });
+      // addEntry({
+      //   timer:,
+      //   blinkRate: calculateBlinkRate(),
+      //   feedbackShown: isShowingBiofeedback(),
+      //   benchmarking: isBenchmarking,
+      //   benchmark: benchmark || null,
+      // });
     }, 200);
 
     benchmarkTimeout = setTimeout(() => {
@@ -90,13 +90,13 @@ export const blinkTracker = (() => {
       isBenchmarking = false;
       benchmark = calculateAvgBlinkRate();
 
-      addEntry({
-        timer,
-        blinkRate: calculateBlinkRate(),
-        feedbackShown: isShowingBiofeedback(),
-        benchmarking: isBenchmarking,
-        benchmark: benchmark || null,
-      });
+      // addEntry({
+      //   timer: blinkTracker.getTimer(),
+      //   blinkRate: blinkTracker.calculateBlinkRate(),
+      //   feedbackShown: isShowingBiofeedback(),
+      //   benchmarking: blinkTracker.isBenchmarking(),
+      //   benchmark: blinkTracker.benchmark() || null,
+      // });
 
       clearInterval(avgInterval);
       clearTimeout(benchmarkTimeout);
@@ -212,6 +212,8 @@ export const blinkTracker = (() => {
     startPhaseWithoutBioFeedback,
     stopTracking,
     addBlink,
+    calculateBlinkRate: () => calculateBlinkRate(),
+    getTimer: () => timer,
     getCount: () => totalCount,
     getBlinkRate: () => calculateBlinkRate(),
     isBenchmarking: () => isBenchmarking,
