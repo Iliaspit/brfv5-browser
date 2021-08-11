@@ -106,7 +106,7 @@ export const blinkTracker = (() => {
         "Benchmarking has been completed - the benchmark is:",
         benchmark
       );
-    }, 30000);
+    }, 180000);
   };
 
   const startPhaseWithBioFeedback = () => {

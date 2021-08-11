@@ -22,6 +22,7 @@ export function calculateAvgBlinkRate() {
     ) {
       return accumulator + Number(currentValue.blinkRate);
     }
+
     return accumulator;
   };
 
