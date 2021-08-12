@@ -177,6 +177,7 @@ const detectBlinkRight = (lm, distances) => {
       console.log("Blinking Running Average", blinkTracker.getBlinkRate());
 
       if (
+        !blinkTracker.preventingBioFeedback() &&
         blinkTracker.shouldShowBiofeedback() &&
         !blinkTracker.isShowingBiofeedback()
       ) {

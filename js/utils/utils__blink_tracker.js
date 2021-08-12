@@ -19,6 +19,7 @@ export const blinkTracker = (() => {
   let experimentTimeout;
   let delayingTimeout;
   let showingBiofeedback = false;
+  let preventingBioFeedback = false;
   let benchmark;
   let totalCount = 0;
   let trackingOn = false;
@@ -62,6 +63,7 @@ export const blinkTracker = (() => {
     totalCountByTime = { 0: 0 };
     totalCount = 0;
     timer = 0;
+    preventingBioFeedback = false;
   };
 
   const startTrackingForBenchmark = () => {
@@ -199,11 +201,22 @@ export const blinkTracker = (() => {
   const startBiofeedbackTimer = () => {
     let bioFeedbackTimeout;
     showingBiofeedback = true;
+    startPreventionTimer();
 
     bioFeedbackTimeout = setTimeout(() => {
       showingBiofeedback = false;
       clearTimeout(bioFeedbackTimeout);
     }, 10000);
+  };
+
+  const startPreventionTimer = () => {
+    let preventionTimer;
+    preventingBioFeedback = true;
+
+    preventionTimer = setTimeout(() => {
+      preventingBioFeedback = false;
+      clearTimeout(preventionTimer);
+    }, 20000);
   };
 
   return {
@@ -216,6 +229,7 @@ export const blinkTracker = (() => {
     getBlinkRate: () => calculateBlinkRate(),
     isBenchmarking: () => isBenchmarking,
     shouldShowBiofeedback,
+    preventingBioFeedback: () => preventingBioFeedback,
     startBiofeedbackTimer,
     isShowingBiofeedback,
     tracking: () => trackingOn,
