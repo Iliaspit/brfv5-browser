@@ -177,15 +177,24 @@ const detectBlinkRight = (lm, distances) => {
       console.log("Blinking Running Average", blinkTracker.getBlinkRate());
 
       if (
-        !blinkTracker.preventingBioFeedback() &&
         blinkTracker.shouldShowBiofeedback() &&
-        !blinkTracker.isShowingBiofeedback()
+        !blinkTracker.isShowingBiofeedback() &&
+        !blinkTracker.isPreventingBioFeedback()
       ) {
+        // show feedback
         blinkTracker.startBiofeedbackTimer();
+        blinkTracker.startPreventionTimer();
         document.getElementById("all-buttons").style.display = "none";
         document.getElementById("expanding-ball").style.display = "block";
       } else if (
         !blinkTracker.shouldShowBiofeedback() &&
+        !blinkTracker.isShowingBiofeedback()
+      ) {
+        // do not show feedback
+        document.getElementById("all-buttons").style.display = "block";
+        document.getElementById("expanding-ball").style.display = "none";
+      } else if (
+        blinkTracker.isPreventingBioFeedback() &&
         !blinkTracker.isShowingBiofeedback()
       ) {
         document.getElementById("all-buttons").style.display = "block";

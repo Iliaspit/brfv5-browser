@@ -17,17 +17,19 @@ export const blinkTracker = (() => {
   let timerInterval;
   let benchmarkTimeout;
   let experimentTimeout;
-  let delayingTimeout;
+  let delayingBlinkAdditionTimeout;
+  let delayingBioFeedbackTimeout;
   let showingBiofeedback = false;
-  let preventingBioFeedback = false;
-  let benchmark;
+  let preventingBioFeedback;
+  let benchmark = 0;
   let totalCount = 0;
   let trackingOn = false;
   let timer = 0;
   let isBenchmarking = false;
   let bioFeedbackPhase = false;
   let totalCountByTime = { 0: 0 };
-  let isDelaying = false;
+  let isDelayingBlinkAddition = false;
+  let isDelayingBioFeedback = false;
   // let currentSession = 0;
 
   // ---------------- ******* ----------------
@@ -38,9 +40,10 @@ export const blinkTracker = (() => {
 
   // ---------------- ******* ----------------
 
-  const isDelayingOn = () => isDelaying;
+  const isDelayingBlinkAdditionOn = () => isDelayingBlinkAddition;
 
   const isShowingBiofeedback = () => showingBiofeedback;
+  const isPreventingBioFeedback = () => preventingBioFeedback;
 
   const calculateBlinkRate = () => {
     let blinkRate;
@@ -112,7 +115,8 @@ export const blinkTracker = (() => {
   };
 
   const startPhaseWithBioFeedback = () => {
-    isDelaying = true;
+    isDelayingBioFeedback = true;
+    isDelayingBlinkAddition = true;
     trackingOn = true;
     console.log("Bio feedback phase has begun");
     bioFeedbackPhase = true;
@@ -130,9 +134,14 @@ export const blinkTracker = (() => {
       });
     }, 200);
 
-    delayingTimeout = setTimeout(() => {
-      isDelaying = false;
-      clearTimeout(delayingTimeout);
+    delayingBioFeedbackTimeout = setTimeout(() => {
+      isDelayingBioFeedback = false;
+      clearTimeout(delayingBioFeedbackTimeout);
+    }, 20000);
+
+    delayingBlinkAdditionTimeout = setTimeout(() => {
+      isDelayingBlinkAddition = false;
+      clearTimeout(delayingBlinkAdditionTimeout);
     }, 1500);
 
     benchmarkTimeout = setTimeout(() => {
@@ -147,7 +156,7 @@ export const blinkTracker = (() => {
   };
 
   const startPhaseWithoutBioFeedback = () => {
-    isDelaying = true;
+    isDelayingBlinkAddition = true;
     bioFeedbackPhase = false;
     trackingOn = true;
     console.log("Non Bio feedback phase has begun");
@@ -165,9 +174,9 @@ export const blinkTracker = (() => {
       });
     }, 200);
 
-    delayingTimeout = setTimeout(() => {
-      isDelaying = false;
-      clearTimeout(delayingTimeout);
+    delayingBlinkAdditionTimeout = setTimeout(() => {
+      isDelayingBlinkAddition = false;
+      clearTimeout(delayingBlinkAdditionTimeout);
     }, 1500);
 
     benchmarkTimeout = setTimeout(() => {
@@ -190,18 +199,20 @@ export const blinkTracker = (() => {
   };
 
   const addBlink = () => {
-    if (trackingOn && !isDelayingOn()) {
+    if (trackingOn && !isDelayingBlinkAdditionOn()) {
       totalCount += 1;
     }
   };
 
   const shouldShowBiofeedback = () =>
-    totalCount !== 0 && bioFeedbackPhase && calculateBlinkRate() > benchmark;
+    !isDelayingBioFeedback &&
+    totalCount !== 0 &&
+    bioFeedbackPhase &&
+    calculateBlinkRate() > benchmark;
 
   const startBiofeedbackTimer = () => {
     let bioFeedbackTimeout;
     showingBiofeedback = true;
-    startPreventionTimer();
 
     bioFeedbackTimeout = setTimeout(() => {
       showingBiofeedback = false;
@@ -216,7 +227,7 @@ export const blinkTracker = (() => {
     preventionTimer = setTimeout(() => {
       preventingBioFeedback = false;
       clearTimeout(preventionTimer);
-    }, 20000);
+    }, 30000);
   };
 
   return {
@@ -229,9 +240,10 @@ export const blinkTracker = (() => {
     getBlinkRate: () => calculateBlinkRate(),
     isBenchmarking: () => isBenchmarking,
     shouldShowBiofeedback,
-    preventingBioFeedback: () => preventingBioFeedback,
+    isPreventingBioFeedback: () => isPreventingBioFeedback(),
     startBiofeedbackTimer,
-    isShowingBiofeedback,
+    startPreventionTimer,
+    isShowingBiofeedback: () => isShowingBiofeedback(),
     tracking: () => trackingOn,
     benchmark: () => benchmark,
   };
